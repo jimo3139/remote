@@ -1,0 +1,1297 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Skreens Remote Control Options Setup</title>
+
+<script language="Javascript" type="text/javascript">
+var DISPLAY_ON = 0;
+var DISPLAY_OFF = 1;
+
+var cKaiIp = "";
+var cKaiUsb = "";
+var cKaiAdp = "";
+var cKaiOsd = "";
+var cKaiKrt = "";
+var cKaiSrc = "";
+var cKaiIname1 = "";
+var cKaiIname2 = "";
+var cKaiIname3 = "";
+var cKaiIname4 = "";
+
+var cKaiGui =  "";
+var cKaiIn =  "";
+var cKaiMsg =  "";
+var cKaiTx =  "";
+var cKaiRx =  "";
+var cJetDelay =  "";
+
+var guiOptionsPtr = 0; 
+var guiOptionsName = [];
+var guiOptionsNumber = [];
+var inOptionsPtr = 0; 
+var inOptionsName = [];
+var inOptionsNumber = [];
+var msgOptionsPtr = 0; 
+var msgOptionsName = [];
+var msgOptionsNumber = [];
+var txOptionsPtr = 0; 
+var txOptionsName = [];
+var txOptionsNumber = [];
+var rxOptionsPtr = 0; 
+var rxOptionsName = [];
+var rxOptionsNumber = [];
+
+var targetOptionsPtr = 0; 
+var targetOptionsName = [];
+var targetOptionsNumber = [];
+var sourceOptionsPtr = 0; 
+var sourceOptionsName = [];
+var sourceOptionsNumber = [];
+var usbOptionsPtr = 0; 
+var usbOptionsName = [];
+var usbOptionsNumber = [];
+var adpOptionsPtr = 0; 
+var adpOptionsName = [];
+var adpOptionsNumber = [];
+var osdOptionsPtr = 0; 
+var osdOptionsName = [];
+var osdOptionsNumber = [];
+
+var loops = 0;
+
+var detailTotal = 10;
+var detailArrayValue = [];
+var detailArrayName = [];
+
+var buf1Total = 22;
+var buf1ArrayValue = [];
+  
+function traceDump(display)
+{
+	let trcHTML = "<div id='traceId'>"; 
+	trcHTML += "<textarea id = 'traceWindow'  style='text-align:left; position:absolute; top:20px; left:700px; width:600px; height:550px; overflow-x:scroll;overflow-y:scroll;font-family:Times New Roman;font-size:10px;color:#000000; font-weight:bold; background-color:#ffffff'></textarea>";
+    trcHTML += "</div>";
+	document.getElementById('tOptions').innerHTML = trcHTML;
+
+	if(display == DISPLAY_OFF)
+	{
+		let divSet = document.getElementById('traceId');
+		divSet.style.display = 'none'; // Do not display this div.
+	}
+}
+
+function optionSetup()
+{
+	targetOptionsPtr = 14; 
+	targetOptionsName[1] = "Harmony Keyfile 1";
+	targetOptionsName[2] = "Harmony Keyfile 2";
+	targetOptionsName[3] = "Harmony Keyfile 3";
+	targetOptionsName[4] = "Harmony Keyfile 4";
+	targetOptionsName[5] = "Harmony Keyfile 5";
+	targetOptionsName[6] = "URC MX350 Keyfile 1";
+	targetOptionsName[7] = "URC MX350 Keyfile 2";
+	targetOptionsName[8] = "APP Tosh 90302 Keyfile 1";
+	targetOptionsName[9] = "GE 33712 LG 6021";
+	targetOptionsName[10] = "GE 33712 Magnavox 0445";
+	targetOptionsName[11] = "GE 33712 Toshiba 0303";
+	targetOptionsName[12] = "GE 33712 GE 0874";
+	targetOptionsName[13] = "OSD Demo";
+	targetOptionsNumber[1] = "1";
+	targetOptionsNumber[2] = "2";
+	targetOptionsNumber[3] = "3";
+	targetOptionsNumber[4] = "4";
+	targetOptionsNumber[5] = "5";
+	targetOptionsNumber[6] = "6";
+	targetOptionsNumber[7] = "7";
+	targetOptionsNumber[8] = "8";
+	targetOptionsNumber[9] = "9";
+	targetOptionsNumber[10] = "10";
+	targetOptionsNumber[11] = "11";
+	targetOptionsNumber[12] = "12";
+	targetOptionsNumber[13] = "13";
+
+	sourceOptionsPtr = 4;
+	sourceOptionsName[1] = "local";
+	sourceOptionsName[2] = "redirected";
+	sourceOptionsName[3] = "disabled";
+	sourceOptionsNumber[1] = "1";
+	sourceOptionsNumber[2] = "2";
+	sourceOptionsNumber[3] = "3";
+
+	usbOptionsPtr = 5;
+	usbOptionsName[1] = "ttyUSB0";
+	usbOptionsName[2] = "ttyUSB1";
+	usbOptionsName[3] = "ttyUSB2";
+	usbOptionsName[4] = "GPIO";
+	usbOptionsNumber[1] = "1";
+	usbOptionsNumber[2] = "2";
+	usbOptionsNumber[3] = "3";
+	usbOptionsNumber[4] = "4";
+
+	adpOptionsPtr = 5;
+	adpOptionsName[1] = "None";
+	adpOptionsName[2] = "cp2102_5";
+	adpOptionsName[3] = "cp2102_6";
+	adpOptionsName[4] = "pl2303";
+	adpOptionsNumber[1] = "1";
+	adpOptionsNumber[2] = "2";
+	adpOptionsNumber[3] = "3";
+	adpOptionsNumber[4] = "4";
+
+	osdOptionsPtr = 5;
+	osdOptionsName[1] = "None";
+	osdOptionsName[2] = "10";
+	osdOptionsName[3] = "20";
+	osdOptionsName[4] = "30";
+	osdOptionsNumber[1] = "1";
+	osdOptionsNumber[2] = "2";
+	osdOptionsNumber[3] = "3";
+	osdOptionsNumber[4] = "4";
+
+	let optHTML = "<div id='optionsId' style='position:absolute; top:280px; left:20px; width:660px; height:300px;'>";
+	optHTML += "<fieldset><legend><b>Universal Remote Control Setup Options</b></legend>";
+	optHTML += "<table border='0' width='100%' cellspacing='0' style='text-align:left; overflow:hidden; font-family:Times New Roman; font-size:16px; color:#000000; background-color:#D1C4E9;'>";
+
+	optHTML += "<tr>";
+    optHTML += "<td bgcolor='#D1C4E9'>Skreens IR Receiver Port</td>";
+   	optHTML += "<td bgcolor='#D1C4E9'>";   	
+	optHTML += ("<div style='text-align:left; overflow:hidden;font-size:16px;color:#000000; background-color:#D1C4E9'>");
+	optHTML += ("<select id='usbSourceSelect' size=10 style='overflow:hidden; background-color:#D1C4E9; color:#000000'>");
+	for(let j=1; j < usbOptionsPtr; j++) 
+	{		
+		optHTML += ("<option style='background-color:#D1C4E9; color:#000000;' value='" + (j) + "'>" + " " + usbOptionsName[j] + "</option>");
+	}
+	optHTML += ("</select>");
+	optHTML += "</div>";  
+	optHTML += "</tr>";
+
+	optHTML += "<tr>";
+    optHTML += "<td bgcolor='#D1C4E9'>Skreens IR Receiver Adapter</td>";
+   	optHTML += "<td bgcolor='#D1C4E9'>";   	
+	optHTML += ("<div style='text-align:left; overflow:hidden;font-size:16px;color:#000000; background-color:#D1C4E9'>");
+	optHTML += ("<select id='adpSourceSelect' size=10 style='overflow:hidden; background-color:#D1C4E9; color:#000000'>");
+	for(let j=1; j < adpOptionsPtr; j++) 
+	{		
+		optHTML += ("<option style='background-color:#D1C4E9; color:#000000;' value='" + (j) + "'>" + " " + adpOptionsName[j] + "</option>");
+	}
+	optHTML += ("</select>");
+	optHTML += "</div>";  
+	optHTML += "</tr>";
+
+	optHTML += "<tr>";
+    optHTML += "<td bgcolor='#D1C4E9'>On Screen Display Timeout, in seconds</td>";
+   	optHTML += "<td bgcolor='#D1C4E9'>";   	
+	optHTML += ("<div style='text-align:left; overflow:hidden;font-size:16px;color:#000000; background-color:#D1C4E9'>");
+	optHTML += ("<select id='osdSourceSelect' size=10 style='overflow:hidden; background-color:#D1C4E9; color:#000000'>");
+	for(let j=1; j < osdOptionsPtr; j++) 
+	{		
+		optHTML += ("<option style='background-color:#D1C4E9; color:#000000;' value='" + (j) + "'>" + " " + osdOptionsName[j] + "</option>");
+	}
+	optHTML += ("</select>");
+	optHTML += "</div>";  
+	optHTML += "</tr>";
+
+	optHTML += "<tr>";
+    optHTML += "<td bgcolor='#D1C4E9'>Skreens IP Source</td>";
+   	optHTML += "<td bgcolor='#D1C4E9'>";   	
+	optHTML += ("<div style='text-align:left; overflow:hidden;font-size:16px;color:#000000; background-color:#D1C4E9'>");
+	optHTML += ("<select id='IpSourceSelect' size=10 style='overflow:hidden; background-color:#D1C4E9; color:#000000'>");
+	for(let j=1; j<sourceOptionsPtr; j++) 
+	{		
+		optHTML += ("<option style='background-color:#D1C4E9; color:#000000;' value='" + (j) + "'>" + " " + sourceOptionsName[j] + "</option>");
+	}
+	optHTML += ("</select>");
+	optHTML += "</div>";  
+	optHTML += "</tr>";
+
+	optHTML += "<tr>";
+    optHTML += "<td bgcolor='#D1C4E9'>Skreens Redirected IP address</td>";
+   	optHTML += "<td bgcolor='#D1C4E9'>";
+   	optHTML += "<div style='text-align:left;'>";
+    optHTML += "<input type='text' maxlength='15' size='15' style='text-align:left; color:#000000; background-color:#D1C4E9;' id='kaiIp'></td>";
+	optHTML += "</div>";  
+	optHTML += "</tr>";
+
+	optHTML += "<tr>";
+    optHTML += "<td bgcolor='#D1C4E9'>Skreens Remote Keypad Template</td>";
+   	optHTML += "<td bgcolor='#D1C4E9'>";
+	optHTML += ("<div style='text-align:left; overflow:hidden;font-size:16px;color:#000000; background-color:#D1C4E9'>");
+	optHTML += ("<select id='TemplateSelect' size=10 style='overflow:hidden; background-color:#D1C4E9; color:#000000'>");
+	for(let i=1; i<targetOptionsPtr; i++) 
+	{		
+		optHTML += ("<option style='background-color:#D1C4E9; color:#000000;' value='" + (i) + "'>" + " " + targetOptionsName[i] + "</option>");
+	}
+	optHTML += ("</select>");
+	optHTML += "</div>";  
+	optHTML += "</tr>";
+
+	optHTML += "<tr>";
+    optHTML += "<td bgcolor='#D1C4E9'>OSD input 1 name</td>";
+   	optHTML += "<td bgcolor='#D1C4E9'>"; 
+   	optHTML += "<div style='text-align:left;'>";
+    optHTML += "<input type='text' maxlength='20' size='20' style='text-align:left; color:#000000; background-color:#D1C4E9;' id='kaiIname1'></td>";
+	optHTML += "</div>";  
+	optHTML += "</tr>";
+
+	optHTML += "<tr>";
+    optHTML += "<td bgcolor='#D1C4E9'>OSD input 2 name</td>";
+   	optHTML += "<td bgcolor='#D1C4E9'>";
+   	optHTML += "<div style='text-align:left;'>";
+    optHTML += "<input type='text' maxlength='20' size='20' style='text-align:left; color:#000000; background-color:#D1C4E9;' id='kaiIname2'></td>";
+	optHTML += "</div>";  
+	optHTML += "</tr>";
+
+	optHTML += "<tr>";
+    optHTML += "<td bgcolor='#D1C4E9'>OSD input 3 name</td>";
+   	optHTML += "<td bgcolor='#D1C4E9'>";
+   	optHTML += "<div style='text-align:left;'>";
+    optHTML += "<input type='text' maxlength='20' size='20' style='text-align:left; color:#000000; background-color:#D1C4E9;' id='kaiIname3'></td>";
+	optHTML += "</div>";  
+	optHTML += "</tr>";
+
+	optHTML += "<tr>";
+    optHTML += "<td bgcolor='#D1C4E9'>OSD input 4 name</td>";
+   	optHTML += "<td bgcolor='#D1C4E9'>";
+   	optHTML += "<div style='text-align:left;'>";
+    optHTML += "<input type='text' maxlength='20' size='20' style='text-align:left; color:#000000; background-color:#D1C4E9;' id='kaiIname4'></td>";
+	optHTML += "</div>";  
+	optHTML += "</tr>";
+
+    optHTML += "<tr>";
+    optHTML += "<td>";
+    optHTML += "<button onclick='sendOptions(0)' style='color:#000000; background-color:#FFFF66;' id='OPTAction' name'OPT0'>Submit</button>";
+    optHTML += "</td>";
+      	
+    optHTML += "<td>";
+	optHTML += "<button onclick='sendOptions(1)' style='color:#000000; background-color:#FFFF66;' id='OPTAction' name'OPT1'>Cancel</button>";
+    optHTML += "</td>";
+
+    optHTML += "</table></div>";
+	document.getElementById('aOptions').innerHTML = optHTML;
+
+	// Close the pulldown window, and get the value
+	let targetId = document.getElementById("TemplateSelect");
+	targetId.size = 0;
+	targetId.value = (cKaiKrt);
+
+	let optionsId = document.getElementById("IpSourceSelect");
+	optionsId.size = 0;
+	optionsId.value = (cKaiSrc);
+
+	let usbId = document.getElementById("usbSourceSelect");
+	usbId.size = 0;
+	usbId.value = (cKaiUsb);
+
+	let adpId = document.getElementById("adpSourceSelect");
+	adpId.size = 0;
+	adpId.value = (cKaiAdp);
+
+	let osdId = document.getElementById("osdSourceSelect");
+	osdId.size = 0;
+	osdId.value = (cKaiOsd);
+
+	let chIp = document.getElementById('kaiIp');
+	chIp.value = (cKaiIp);
+
+    let chIN1 = document.getElementById('kaiIname1');
+	chIN1.value = (cKaiIname1);
+
+    let chIN2 = document.getElementById('kaiIname2');
+	chIN2.value = (cKaiIname2);
+
+    let chIN3 = document.getElementById('kaiIname3');
+	chIN3.value = (cKaiIname3);
+
+    let chIN4 = document.getElementById('kaiIname4');
+	chIN4.value = (cKaiIname4);
+}
+function sendOptions(ctrl)
+{
+	if(ctrl == 0)
+	{
+		cKaiIp = document.getElementById('kaiIp').value;
+
+		cKaiKrt = document.getElementById('TemplateSelect').value;
+
+		cKaiSrc = document.getElementById('IpSourceSelect').value;
+
+		cKaiUsb = document.getElementById('usbSourceSelect').value;
+
+		cKaiAdp = document.getElementById('adpSourceSelect').value;
+
+		cKaiOsd = document.getElementById('osdSourceSelect').value;
+
+		cKaiIname1 = document.getElementById('kaiIname1').value;
+		cKaiIname1 = cKaiIname1.split(" ").join("_");
+
+		cKaiIname2 = document.getElementById('kaiIname2').value;
+		cKaiIname2 = cKaiIname2.split(" ").join("_");
+
+		cKaiIname3 = document.getElementById('kaiIname3').value;
+		cKaiIname3 = cKaiIname3.split(" ").join("_");
+
+		cKaiIname4 = document.getElementById('kaiIname4').value;
+		cKaiIname4 = cKaiIname4.split(" ").join("_");
+
+		// Create the control string for the box.
+		let startStr = "kip ";
+		let localStr = startStr.concat(cKaiIp,
+							"\nkadp ",cKaiAdp,
+							"\nkrt ",cKaiKrt,
+							"\nosdt ",cKaiOsd,
+							"\nksrc ",cKaiSrc,
+							"\nkusb ",cKaiUsb,
+							"\niname1 ",cKaiIname1,
+							"\niname2 ",cKaiIname2,
+							"\niname3 ",cKaiIname3,
+							"\niname4 ",cKaiIname4,"\n");
+
+		// Send the control string to the box.
+		optionsSave(localStr);
+		alert("If changes were made, Please reboot Skreens unit.");
+	} 
+}
+function configSetup()
+{
+	guiOptionsPtr = 3; 
+	guiOptionsName[1] = "on";
+	guiOptionsName[2] = "off";
+	guiOptionsNumber[1] = "1";
+	guiOptionsNumber[2] = "2";
+
+	inOptionsPtr = 3;
+	inOptionsName[1] = "ir";
+	inOptionsName[2] = "rf";
+	inOptionsNumber[1] = "1";
+	inOptionsNumber[2] = "2";
+
+	msgOptionsPtr = 4;
+	msgOptionsName[1] = "normal";
+	msgOptionsName[2] = "debug";
+	msgOptionsName[3] = "all";
+	msgOptionsNumber[1] = "1";
+	msgOptionsNumber[2] = "2";
+	msgOptionsNumber[3] = "3";
+
+	txOptionsPtr = 5;
+	txOptionsName[0] = "0";
+	txOptionsName[1] = "500000";
+	txOptionsName[2] = "750000";
+	txOptionsName[3] = "1000000";
+	txOptionsName[4] = "1250000";
+	txOptionsNumber[0] = "0";
+	txOptionsNumber[1] = "1";
+	txOptionsNumber[2] = "2";
+	txOptionsNumber[3] = "3";
+	txOptionsNumber[4] = "4";
+
+	rxOptionsPtr = 5;
+	rxOptionsName[0] = "0";
+	rxOptionsName[1] = "500000";
+	rxOptionsName[2] = "750000";
+	rxOptionsName[3] = "1000000";
+	rxOptionsName[4] = "1250000";
+	rxOptionsNumber[0] = "0";
+	rxOptionsNumber[1] = "1";
+	rxOptionsNumber[2] = "2";
+	rxOptionsNumber[3] = "3";
+	rxOptionsNumber[4] = "4";
+
+	let cfgHTML = "<div id='configId' style='position:absolute; top:280px; left:700px; width:600px; height:300px;'>";
+	cfgHTML += "<fieldset><legend><b>Universal Remote Setup Configurations</b></legend>";
+	cfgHTML += "<table border='0' width='100%' cellspacing='0' style='text-align:left; overflow:hidden; font-family:Times New Roman; font-size:16px; color:#000000; background-color:#D1C4E9;'>";
+
+	cfgHTML += "<tr>";
+    cfgHTML += "<td bgcolor='#D1C4E9'>GUI Mode</td>";
+   	cfgHTML += "<td bgcolor='#D1C4E9'>";   	
+	cfgHTML += ("<div style='text-align:left; overflow:hidden;font-size:16px;color:#000000; background-color:#D1C4E9'>");
+	cfgHTML += ("<select id='guiMode' size=10 style='overflow:hidden; background-color:#D1C4E9; color:#000000'>");
+	for(let j=1; j < guiOptionsPtr; j++) 
+	{		
+		cfgHTML += ("<option style='background-color:#D1C4E9; color:#000000;' value='" + (j) + "'>" + " " + guiOptionsName[j] + "</option>");
+	}
+	cfgHTML += ("</select>");
+	cfgHTML += "</div>";  
+	cfgHTML += "</tr>";
+
+	cfgHTML += "<tr>";
+    cfgHTML += "<td bgcolor='#D1C4E9'>Input Source</td>";
+   	cfgHTML += "<td bgcolor='#D1C4E9'>";   	
+	cfgHTML += ("<div style='text-align:left; overflow:hidden;font-size:16px;color:#000000; background-color:#D1C4E9'>");
+	cfgHTML += ("<select id='inputSource' size=10 style='overflow:hidden; background-color:#D1C4E9; color:#000000'>");
+	for(let j=1; j < inOptionsPtr; j++) 
+	{		
+		cfgHTML += ("<option style='background-color:#D1C4E9; color:#000000;' value='" + (j) + "'>" + " " + inOptionsName[j] + "</option>");
+	}
+	cfgHTML += ("</select>");
+	cfgHTML += "</div>";  
+	cfgHTML += "</tr>";
+
+	cfgHTML += "<tr>";
+    cfgHTML += "<td bgcolor='#D1C4E9'>Remote Message Mode</td>";
+   	cfgHTML += "<td bgcolor='#D1C4E9'>";   	
+	cfgHTML += ("<div style='text-align:left; overflow:hidden;font-size:16px;color:#000000; background-color:#D1C4E9'>");
+	cfgHTML += ("<select id='messageMode' size=10 style='overflow:hidden; background-color:#D1C4E9; color:#000000'>");
+	for(let j=1; j < msgOptionsPtr; j++) 
+	{		
+		cfgHTML += ("<option style='background-color:#D1C4E9; color:#000000;' value='" + (j) + "'>" + " " + msgOptionsName[j] + "</option>");
+	}
+	cfgHTML += ("</select>");
+	cfgHTML += "</div>";  
+	cfgHTML += "</tr>";
+
+	cfgHTML += "<tr>";
+    cfgHTML += "<td bgcolor='#D1C4E9'>Time between IR Transfers, in MICRO-seconds</td>";
+   	cfgHTML += "<td bgcolor='#D1C4E9'>";   	
+	cfgHTML += ("<div style='text-align:left; overflow:hidden;font-size:16px;color:#000000; background-color:#D1C4E9'>");
+	cfgHTML += ("<select id='txTime' size=10 style='overflow:hidden; background-color:#D1C4E9; color:#000000'>");
+	for(let j=0; j < txOptionsPtr; j++) 
+	{		
+		cfgHTML += ("<option style='background-color:#D1C4E9; color:#000000;' value='" + (j) + "'>" + " " + txOptionsName[j] + "</option>");
+	}
+	cfgHTML += ("</select>");
+	cfgHTML += "</div>";  
+	cfgHTML += "</tr>";
+
+	cfgHTML += "<tr>";
+    cfgHTML += "<td bgcolor='#D1C4E9'>Time between IR key presses, in MICRO-seconds</td>";
+   	cfgHTML += "<td bgcolor='#D1C4E9'>";   	
+	cfgHTML += ("<div style='text-align:left; overflow:hidden;font-size:16px;color:#000000; background-color:#D1C4E9'>");
+	cfgHTML += ("<select id='rxTime' size=10 style='overflow:hidden; background-color:#D1C4E9; color:#000000'>");
+	for(let j=0; j<rxOptionsPtr; j++) 
+	{		
+		cfgHTML += ("<option style='background-color:#D1C4E9; color:#000000;' value='" + (j) + "'>" + " " + rxOptionsName[j] + "</option>");
+	}
+	cfgHTML += ("</select>");
+	cfgHTML += "</div>";  
+	cfgHTML += "</tr>";
+
+	cfgHTML += "<tr>";
+    cfgHTML += "<td bgcolor='#D1C4E9'>OSD demo delay between key presses</td>";
+   	cfgHTML += "<td bgcolor='#D1C4E9'>"; 
+   	cfgHTML += "<div style='text-align:left;'>";
+    cfgHTML += "<input type='text' maxlength='5' size='5' style='text-align:left; color:#000000; background-color:#D1C4E9;' id='jetDelay'></td>";
+	cfgHTML += "</div>";  
+	cfgHTML += "</tr>";
+
+    cfgHTML += "<tr>";
+    cfgHTML += "<td>";
+    cfgHTML += "<button onclick='sendConfig(0)' style='color:#000000; background-color:#FFFF66;' id='CFGAction' name'CFG0'>Submit</button>";
+    cfgHTML += "</td>";
+      	
+    cfgHTML += "<td>";
+	cfgHTML += "<button onclick='sendConfig(1)' style='color:#000000; background-color:#FFFF66;' id='CFGAction' name'CFG1'>Cancel</button>";
+    cfgHTML += "</td>";
+
+    cfgHTML += "</table></div>";
+	document.getElementById('cOptions').innerHTML = cfgHTML;
+
+	let divSet = document.getElementById('configId');
+	divSet.style.display = 'none'; // Do not display this div.
+
+	// Close the pulldown window, and get the value
+	let guiId = document.getElementById("guiMode");
+	guiId.size = 0;
+	guiId.value = (cKaiGui);
+
+	let inId = document.getElementById("inputSource");
+	inId.size = 0;
+	inId.value = (cKaiIn);
+
+	let msgId = document.getElementById("messageMode");
+	msgId.size = 0;
+	msgId.value = (cKaiMsg);
+
+	let txId = document.getElementById("txTime");
+	txId.size = 0;
+	txId.value = (cKaiTx);
+
+	let rxId = document.getElementById("rxTime");
+	rxId.size = 0;
+	rxId.value = (cKaiRx);
+
+    let chRev = document.getElementById('jetDelay');
+	chRev.value = (cJetDelay);
+}
+function sendConfig(ctrl)
+{
+	if(ctrl == 0)
+	{
+		cKaiGui = document.getElementById('guiMode').value;
+
+		cKaiIn = document.getElementById('inputSource').value;
+
+		cKaiMsg = document.getElementById('messageMode').value;
+
+		cKaiTx = document.getElementById('txTime').value;
+
+		cKaiRx = document.getElementById('rxTime').value;
+
+		cJetDelay = document.getElementById('jetDelay').value;
+
+		// Create the control string for the box.
+		let startStr = "guimode ";
+		let localStr = startStr.concat(cKaiGui,
+							"\ninputsource ",cKaiIn,
+							"\nremotemode ",cKaiMsg,
+							"\ndbkt ",cKaiTx,
+							"\ndbkr ",cKaiRx,
+							"\njetserver ","1",
+							"\nosdd ",cJetDelay,"\n");
+
+		// Send the control string to the box.
+		configSave(localStr);
+		alert("If changes were made, Please reboot the Skreens unit.");
+	} 
+}
+function openStartupFile() 
+{
+	targetOptionsPtr = 0;
+	socket.emit('client_response', {'myToken': "optionsRequest"});
+}
+function optionsRefresh()
+{
+	optionSetup();
+	configSetup();
+	traceDump(display);
+	if(loops == 0)
+	{
+		loops = 1;
+		window.setTimeout(optionsRefresh,4000); // Refresh every 4 seconds.
+	}
+}
+function allDetails()
+{
+	switch(cKaiKrt)
+	{ // Need to work on this to see if any key changes need to be made.
+		case "1": eliteDetails2();break;
+		case "2": eliteDetails2();break;
+		case "3": eliteDetails2();break;
+		case "4": eliteDetails2();break;
+		case "5": eliteDetails2();break;
+		default : eliteDetails2();break;
+	}
+} 
+function eliteDetails1() 
+{
+ 	let width  = 500;
+ 	let height = 500;
+ 	let left   = 700;
+ 	let top    = 100;
+ 	let params = 'width='+width+', height='+height;
+ 	params += ', top='+top+', left='+left;
+ 	params += ', directories=no';
+ 	params += ', location=no';
+ 	params += ', menubar=no';
+ 	params += ', resizable=no';
+ 	params += ', scrollbars=yes';
+ 	params += ', titlebars=yes';
+ 	params += ', status=yes';
+ 	params += ', toolbar=no';
+	
+	detailsWindow = window.open("", 'Options Help', params);
+	detailsWindow.document.write("<div style='text-align:left; overflow-y:scroll;font-family:Times New Roman;font-size:16px;color:#000000; background-color:#00FFFF'>");
+	detailsWindow.document.write("<table border='2' width='100%' cellspacing='2'>");
+	for(let i=0; i<buf1Total; i++) 
+	{		
+		detailsWindow.document.write("<tr>");
+		detailsWindow.document.write("<td style='text-align:left; width:150px; overflow:hidden;font-size:16px;color:#000000; background-color:#D1C4E9'>");
+		switch(i)
+		{	
+			case 0: detailsWindow.document.write("RECORD");break;
+			case 1: detailsWindow.document.write("INFO");break;
+			case 2: detailsWindow.document.write("CHANNEL UP");break;
+			case 3: detailsWindow.document.write("CHANNEL DOWN");break;
+			case 4: detailsWindow.document.write("MENU");break;
+			case 5: detailsWindow.document.write("EXIT");break;
+			case 6: detailsWindow.document.write("FAST FORWARD");break;
+			case 7: detailsWindow.document.write("FAST REVERSE");break;
+			case 8: detailsWindow.document.write("PLAY");break;
+			case 9: detailsWindow.document.write("PAUSE");break;
+			case 10: detailsWindow.document.write("STOP");break;
+			case 11: detailsWindow.document.write("BACK");break;
+			case 12: detailsWindow.document.write("NUMBER 0");break;
+			case 13: detailsWindow.document.write("NUMBER 1");break;
+			case 14: detailsWindow.document.write("NUMBER 2");break;
+			case 15: detailsWindow.document.write("NUMBER 3");break;
+			case 16: detailsWindow.document.write("NUMBER 4");break;
+			case 17: detailsWindow.document.write("UP");break;
+			case 18: detailsWindow.document.write("DOWN");break;
+			case 19: detailsWindow.document.write("LEFT");break;
+			case 20: detailsWindow.document.write("RIGHT");break;
+			case 21: detailsWindow.document.write("OK");break;
+		}
+
+		detailsWindow.document.write("</td>");
+		detailsWindow.document.write("<td style='text-align:left; width:350px; overflow:hidden; font-size:16px;color:#000000; background-color:#D1C4E9'>");
+        buf1ArrayValue[0] = "Enters LAYOUTS OSD mode:  Displays a layout selector strip on the bottom of the display. This template doesn't support the GUIDE key.";
+        buf1ArrayValue[1] = "Enters INFO OSD mode: Displays the video content for all 4 inputs, plus an illustration of the remote control layout.";
+        buf1ArrayValue[2] = "Advances to the next layout from the Skreens layout inventory.";
+        buf1ArrayValue[3] = "Retreats back to the previous layout from the Skreens layout inventory.";
+        buf1ArrayValue[4] = "Displays decriptions for Alexa commands.";
+        buf1ArrayValue[5] = "Exits out of all On Screen Display (OSD) configutations.";
+        buf1ArrayValue[6] = "For multiple window layouts this will advance the audio source to the next window.";
+        buf1ArrayValue[7] = "For multiple window layouts this will retreat the audio source to the previous window.";
+        buf1ArrayValue[8] = "When in the status OSD mode, the highlighted window will go to full screen."; 
+        buf1ArrayValue[9] = "Enters the STATUS OSD mode. For multiple window layouts, use use left/right to move to a new window, and up/down to swap windows."; 
+        buf1ArrayValue[10] = "Sets the unit's default layout as the currently displayed layout.";
+        buf1ArrayValue[11] = "reinitialzes the units configuration options, and loads the default layout.";
+        buf1ArrayValue[12] = "Reboots the Skreens unit if pressed twice in a row.";
+        buf1ArrayValue[13] = "Bring what ever is on HDMI1 to full screen.";
+        buf1ArrayValue[14] = "Bring what ever is on HDMI2 to full screen.";
+        buf1ArrayValue[15] = "Bring what ever is on HDMI3 to full screen.";
+        buf1ArrayValue[16] = "Bring what ever is on HDMI4 to full screen.";
+        buf1ArrayValue[17] = "While in status mode, and you have a multiple window layout up, this will advance swap the windows.";
+        buf1ArrayValue[18] = "While in status mode, and you have a multiple window layout up, this will retreat swap the windows.";
+        buf1ArrayValue[19] = "Used by most all for the OSD mode to mode left by one window.";
+        buf1ArrayValue[20] = "Used by most all for the OSD mode to mode right by one window.";
+        buf1ArrayValue[21] = "This will initiate the currently OSD setup.";
+		detailsWindow.document.write(buf1ArrayValue[i]);
+
+		detailsWindow.document.write("</td>");
+		detailsWindow.document.write("</tr>");
+	}
+	detailsWindow.document.write("</table></div>");
+}
+function eliteDetails2() 
+{
+ 	let width  = 500;
+ 	let height = 500;
+ 	let left   = 700;
+ 	let top    = 100;
+ 	let params = 'width='+width+', height='+height;
+ 	params += ', top='+top+', left='+left;
+ 	params += ', directories=no';
+ 	params += ', location=no';
+ 	params += ', menubar=no';
+ 	params += ', resizable=no';
+ 	params += ', scrollbars=yes';
+ 	params += ', titlebars=yes';
+ 	params += ', status=yes';
+ 	params += ', toolbar=no';
+	
+	detailsWindow = window.open("", 'Options Help', params);
+	detailsWindow.document.write("<div style='text-align:left; overflow-y:scroll;font-family:Times New Roman;font-size:16px;color:#000000; background-color:#00FFFF'>");
+	detailsWindow.document.write("<table border='2' width='100%' cellspacing='2'>");
+	for(let i=0; i<buf1Total; i++) 
+	{		
+		detailsWindow.document.write("<tr>");
+		detailsWindow.document.write("<td style='text-align:left; width:150px; overflow:hidden;font-size:16px;color:#000000; background-color:#D1C4E9'>");
+		switch(i)
+		{	
+			case 0: detailsWindow.document.write("GUIDE");break;
+			case 1: detailsWindow.document.write("INFO");break;
+			case 2: detailsWindow.document.write("CHANNEL UP");break;
+			case 3: detailsWindow.document.write("CHANNEL DOWN");break;
+			case 4: detailsWindow.document.write("MENU");break;
+			case 5: detailsWindow.document.write("EXIT");break;
+			case 6: detailsWindow.document.write("FAST FORWARD");break;
+			case 7: detailsWindow.document.write("FAST REVERSE");break;
+			case 8: detailsWindow.document.write("PLAY");break;
+			case 9: detailsWindow.document.write("PAUSE");break;
+			case 10: detailsWindow.document.write("STOP");break;
+			case 11: detailsWindow.document.write("BACK");break;
+			case 12: detailsWindow.document.write("NUMBER 0");break;
+			case 13: detailsWindow.document.write("NUMBER 1");break;
+			case 14: detailsWindow.document.write("NUMBER 2");break;
+			case 15: detailsWindow.document.write("NUMBER 3");break;
+			case 16: detailsWindow.document.write("NUMBER 4");break;
+			case 17: detailsWindow.document.write("UP");break;
+			case 18: detailsWindow.document.write("DOWN");break;
+			case 19: detailsWindow.document.write("LEFT");break;
+			case 20: detailsWindow.document.write("RIGHT");break;
+			case 21: detailsWindow.document.write("OK");break;
+		}
+
+		detailsWindow.document.write("</td>");
+		detailsWindow.document.write("<td style='text-align:left; width:350px; overflow:hidden; font-size:16px;color:#000000; background-color:#D1C4E9'>");
+        buf1ArrayValue[0] = "Enters LAYOUTS OSD mode:  Displays a layout selector strip on the bottom of the display.";
+        buf1ArrayValue[1] = "Enters INFO OSD mode: Displays the video content for all 4 inputs, plus an illustration of the remote control layout.";
+        buf1ArrayValue[2] = "Advances to the next layout from the Skreens layout inventory.";
+        buf1ArrayValue[3] = "Retreats back to the previous layout from the Skreens layout inventory.";
+        buf1ArrayValue[4] = "Displays decriptions for Alexa commands.";
+        buf1ArrayValue[5] = "Exits out of all On Screen Display (OSD) configutations.";
+        buf1ArrayValue[6] = "For multiple window layouts this will advance the audio source to the next window.";
+        buf1ArrayValue[7] = "For multiple window layouts this will retreat the audio source to the previous window.";
+        buf1ArrayValue[8] = "When in the status OSD mode, the highlighted window will go to full screen."; 
+        buf1ArrayValue[9] = "Enters the STATUS OSD mode. For multiple window layouts, use use left/right to move to a new window, and up/down to swap windows."; 
+        buf1ArrayValue[10] = "Sets the unit's default layout as the current layout. ";
+        buf1ArrayValue[11] = "reinitialzes configuration options, and loads the default OSD layout.";
+        buf1ArrayValue[12] = "Reboots the Skreens unit if pressed twice in a row.";
+        buf1ArrayValue[13] = "Bring what ever is on HDMI1 to full screen.";
+        buf1ArrayValue[14] = "Bring what ever is on HDMI2 to full screen.";
+        buf1ArrayValue[15] = "Bring what ever is on HDMI3 to full screen.";
+        buf1ArrayValue[16] = "Bring what ever is on HDMI4 to full screen.";
+        buf1ArrayValue[17] = "While in status mode, and you have a multiple window layout up, this will advance swap the windows.";
+        buf1ArrayValue[18] = "While in status mode, and you have a multiple window layout up, this will retreat swap the windows.";
+        buf1ArrayValue[19] = "Used by most all for the OSD mode to mode left by one window.";
+        buf1ArrayValue[20] = "Used by most all for the OSD mode to mode right by one window.";
+        buf1ArrayValue[21] = "This will initiate the currently OSD setup.";
+		detailsWindow.document.write(buf1ArrayValue[i]);
+
+		detailsWindow.document.write("</td>");
+		detailsWindow.document.write("</tr>");
+	}
+	detailsWindow.document.write("</table></div>");
+}
+function eliteDetails3() 
+{
+ 	let width  = 500;
+ 	let height = 500;
+ 	let left   = 700;
+ 	let top    = 100;
+ 	let params = 'width='+width+', height='+height;
+ 	params += ', top='+top+', left='+left;
+ 	params += ', directories=no';
+ 	params += ', location=no';
+ 	params += ', menubar=no';
+ 	params += ', resizable=no';
+ 	params += ', scrollbars=yes';
+ 	params += ', titlebars=yes';
+ 	params += ', status=yes';
+ 	params += ', toolbar=no';
+	
+	detailsWindow = window.open("", 'Options Help', params);
+	detailsWindow.document.write("<div style='text-align:left; overflow-y:scroll;font-family:Times New Roman;font-size:16px;color:#000000; background-color:#00FFFF'>");
+	detailsWindow.document.write("<table border='2' width='100%' cellspacing='2'>");
+	for(let i=0; i<buf1Total; i++) 
+	{		
+		detailsWindow.document.write("<tr>");
+		detailsWindow.document.write("<td style='text-align:left; width:150px; overflow:hidden;font-size:16px;color:#000000; background-color:#D1C4E9'>");
+		switch(i)
+		{	
+			case 0: detailsWindow.document.write("GUIDE");break;
+			case 1: detailsWindow.document.write("INFO");break;
+			case 2: detailsWindow.document.write("CHANNEL UP");break;
+			case 3: detailsWindow.document.write("CHANNEL DOWN");break;
+			case 4: detailsWindow.document.write("MENU");break;
+			case 5: detailsWindow.document.write("EXIT");break;
+			case 6: detailsWindow.document.write("FAST FORWARD");break;
+			case 7: detailsWindow.document.write("FAST REVERSE");break;
+			case 8: detailsWindow.document.write("PLAY");break;
+			case 9: detailsWindow.document.write("PAUSE");break;
+			case 10: detailsWindow.document.write("STOP");break;
+			case 11: detailsWindow.document.write("BACK");break;
+			case 12: detailsWindow.document.write("NUMBER 0");break;
+			case 13: detailsWindow.document.write("NUMBER 1");break;
+			case 14: detailsWindow.document.write("NUMBER 2");break;
+			case 15: detailsWindow.document.write("NUMBER 3");break;
+			case 16: detailsWindow.document.write("NUMBER 4");break;
+			case 17: detailsWindow.document.write("UP");break;
+			case 18: detailsWindow.document.write("DOWN");break;
+			case 19: detailsWindow.document.write("LEFT");break;
+			case 20: detailsWindow.document.write("RIGHT");break;
+			case 21: detailsWindow.document.write("OK");break;
+		}
+
+		detailsWindow.document.write("</td>");
+		detailsWindow.document.write("<td style='text-align:left; width:350px; overflow:hidden; font-size:16px;color:#000000; background-color:#D1C4E9'>");
+        buf1ArrayValue[0] = "Enters LAYOUTS OSD mode:  Displays a layout selector strip on the bottom of the display.";
+        buf1ArrayValue[1] = "Enters INFO OSD mode: Displays the video content for all 4 inputs, plus an illustration of the remote control layout.";
+        buf1ArrayValue[2] = "Advances to the next layout from the Skreens layout inventory.";
+        buf1ArrayValue[3] = "Retreats back to the previous layout from the Skreens layout inventory.";
+        buf1ArrayValue[4] = "Displays decriptions for Alexa commands.";
+        buf1ArrayValue[5] = "Exits out of all On Screen Display (OSD) configutations.";
+        buf1ArrayValue[6] = "For multiple window layouts this will advance the audio source to the next window.";
+        buf1ArrayValue[7] = "For multiple window layouts this will retreat the audio source to the previous window.";
+        buf1ArrayValue[8] = "When in the status OSD mode, the highlighted window will go to full screen."; 
+        buf1ArrayValue[9] = "Enters the STATUS OSD mode. For multiple window layouts, use use left/right to move to a new window, and up/down to swap windows."; 
+        buf1ArrayValue[10] = "Sets the unit's default layout as the current layout. ";
+        buf1ArrayValue[11] = "Reinitializes the unit just in case configuration options have changed.";
+        buf1ArrayValue[12] = "Reboots the Skreens unit.";
+        buf1ArrayValue[13] = "Not Supported, must be a number-less remote?";
+        buf1ArrayValue[14] = "Not Supported, must be a number-less remote?";
+        buf1ArrayValue[15] = "Not Supported, must be a number-less remote?";
+        buf1ArrayValue[16] = "Not Supported, must be a number-less remote?";
+        buf1ArrayValue[17] = "While in status mode, and you have a multiple window layout up, this will advance swap the windows.";
+        buf1ArrayValue[18] = "While in status mode, and you have a multiple window layout up, this will retreat swap the windows.";
+        buf1ArrayValue[19] = "Used by most all for the OSD mode to mode left by one window.";
+        buf1ArrayValue[20] = "Used by most all for the OSD mode to mode right by one window.";
+        buf1ArrayValue[21] = "This will initiate the currently OSD setup.";
+		detailsWindow.document.write(buf1ArrayValue[i]);
+
+		detailsWindow.document.write("</td>");
+		detailsWindow.document.write("</tr>");
+	}
+	detailsWindow.document.write("</table></div>");
+}
+function optionsDetails() 
+{
+ 	let width  = 500;
+ 	let height = 500;
+ 	let left   = 700;
+ 	let top    = 100;
+ 	let params = 'width='+width+', height='+height;
+ 	params += ', top='+top+', left='+left;
+ 	params += ', directories=no';
+ 	params += ', location=no';
+ 	params += ', menubar=no';
+ 	params += ', resizable=no';
+ 	params += ', scrollbars=yes';
+ 	params += ', titlebars=yes';
+ 	params += ', status=yes';
+ 	params += ', toolbar=no';
+	
+	detailsWindow = window.open("", 'Options Help', params);
+	detailsWindow.document.write("<div style='text-align:left; overflow:hidden;font-family:Times New Roman;font-size:16px;color:#000000; background-color:#00FFFF'>");
+	detailsWindow.document.write("<table border='2' width='100%' cellspacing='2'>");
+	for(let i=0; i<detailTotal; i++) 
+	{		
+		detailsWindow.document.write("<tr>");
+		detailsWindow.document.write("<td style='text-align:left; width:200px; height:25px; overflow:hidden;font-size:16px;color:#000000; background-color:#D1C4E9'>");
+		switch(i)
+		{	
+			case 0: detailsWindow.document.write("Skreens IR Receiver Port");break;
+			case 1: detailsWindow.document.write("Skreens IR Receiver Adapter");break;
+			case 2: detailsWindow.document.write("On Screen Display Timeout");break;
+			case 3: detailsWindow.document.write("Skreens IP Source");break;
+			case 4: detailsWindow.document.write("Skreens Redirected IP Address");break;
+			case 5: detailsWindow.document.write("Skreens Remote Keypad Template");break;
+			case 6: detailsWindow.document.write("OSD input 1 name");break;
+			case 7: detailsWindow.document.write("OSD input 2 name");break;
+			case 8: detailsWindow.document.write("OSD input 3 name");break;
+			case 9: detailsWindow.document.write("OSD input 4 name");break;
+		}
+
+		detailsWindow.document.write("</td>");
+		detailsWindow.document.write("<td style='text-align:left; width:300px; height:25px; overflow:hidden;font-size:16px;color:#000000; background-color:#D1C4E9'>");
+        detailArrayValue[0] = "Select which USB or GPIO port is being used by the the universal remotes IR receiver module. The default is USB port 0.";
+        detailArrayValue[1] = "Select which USB adapter is being used. More details coming soon.";
+        detailArrayValue[2] = "Select a On Screen Display timeout value, which will dismiss any OSD it loaded.";
+        detailArrayValue[3] = "Typically you would send IR keys to the Skreens unit that is controlling your devices, but if you wanted to send IR keys to another Skreens unit, you can redirect them here.";
+        detailArrayValue[4] = "This option allows you to enter an IP address for the redirected Skreens unit.";
+        detailArrayValue[5] = "Skreens needs a unique set of remote control key codes so not to interfear with other devices. Here you can select a template, and if it is a problem, try another template.";
+        detailArrayValue[6] = "This is the name of the device used by the OSD for HDMI input port #1";
+        detailArrayValue[7] = "This is the name of the device used by the OSD for HDMI input port #2";
+        detailArrayValue[8] = "This is the name of the device used by the OSD for HDMI input port #3";
+        detailArrayValue[9] = "This is the name of the device used by the OSD for HDMI input port #4";
+		detailsWindow.document.write(detailArrayValue[i]);
+
+		detailsWindow.document.write("</td>");
+		detailsWindow.document.write("</tr>");
+	}
+	detailsWindow.document.write("</table></div>");
+}
+
+function optionsSave(localStr)
+{
+	let myUrl = window.location.href;
+	// Some times there is an anchor "#" on the end of this string. We need to remove it.
+	myUrl = myUrl.replace('/#','/');
+
+	// Remove harmony from this URL.
+	myUrl = myUrl.replace("/harmony", "");
+
+	let myPath = myUrl.concat("/RC/remote/jet.opt");
+
+	let myObject = new XMLHttpRequest();
+
+	myObject.onreadystatechange = function() 
+	{//Call a function when the state changes.
+		if(myObject.readyState == 0)
+		{
+			alert("Request not initalized");
+		}
+		else if(myObject.readyState == 4)
+		{
+			//alert("Ready state is a 4, and status = " + myObject.statusText);
+		}
+	}
+
+	// no need for a filename here, This post is a special case.
+	myObject.open("POST", myPath, true);
+	myObject.send(localStr); // Do a POST
+
+	if (myObject.status == 404) 
+	{
+		alert("Error404: File not found.");
+	}
+	else if (myObject.status == 403) 
+	{
+		alert("Error403: Forbidden access.");
+	}
+}
+
+function configSave(localStr)
+{
+	let myUrl = window.location.href;
+	// Some times there is an anchor "#" on the end of this string. We need to remove it.
+	myUrl = myUrl.replace('/#','/');
+
+	// Remove harmony from this URL.
+	myUrl = myUrl.replace("/harmony", "");
+
+	let myPath = myUrl.concat("/RC/remote/jet.cfg");
+
+	let myObject = new XMLHttpRequest();
+
+	myObject.onreadystatechange = function() 
+	{//Call a function when the state changes.
+		if(myObject.readyState == 0)
+		{
+			alert("Request not initalized");
+		}
+		else if(myObject.readyState == 4)
+		{
+			//alert("Ready state is a 4, and status = " + myObject.statusText);
+		}
+	}
+
+	// no need for a filename here, This post is a special case.
+	myObject.open("POST", myPath, true);
+	myObject.send(localStr); // Do a POST
+
+	if (myObject.status == 404) 
+	{
+		alert("Error404: File not found.");
+	}
+	else if (myObject.status == 403) 
+	{
+		alert("Error403: Forbidden access.");
+	}
+}
+
+function options_unit(display)
+{
+	let myUrl = window.location.href;
+	// Some times there is an anchor "#" on the end of this string. We need to remove it.
+	myUrl = myUrl.replace('/#','/');
+
+	// Remove harmony from this URL.
+	myUrl = myUrl.replace("/harmony", "");
+
+	let myPath = myUrl.concat("/RC/remote/jet.opt");
+
+	let myObject = new XMLHttpRequest();
+	myObject.open("GET", myPath, true);
+
+	myObject.send(null); // Do a GET.
+	myObject.onreadystatechange = function ()
+	{
+		// check for request finished.
+		if(myObject.readyState === 4)
+		{
+			// Check for request state to be OK.
+			if(myObject.status === 200 || myObject.status == 0)
+			{
+				let allText = myObject.responseText;
+				configOptions(allText, display); 
+
+			}
+			else if (myObject.status == 404) 
+			{
+				alert("Error404: File not found = "+myPath);
+			}
+			else if (myObject.status == 403) 
+			{
+				alert("Error403: Forbidden access, or file type not supported by the copper server.");
+			}
+		}
+	}
+}
+
+function configOptions(text, display) 
+{
+	let index;
+	let i;
+	let cnt;
+	let count = text.split(/\r\n|\r|\n/); 
+
+	// If there is a blank jet.opt file, the count will typically be 4. Don't use it.
+	if(count.length > 4)
+	{
+		// Split up the config file parameters and init our option array.
+		for(i = 0;i < (count.length-1); i++)
+		{
+			cnt = count[i].split(" "); 
+			let option = cnt[0].split(" ", cnt.length);
+
+			switch(cnt[0])
+			{
+				case 'kip' :		cKaiIp = cnt[1];break;
+				case 'krt' :		cKaiKrt = cnt[1];break;
+				case 'ksrc' :		cKaiSrc = cnt[1];break;
+				case 'kusb' :		cKaiUsb = cnt[1];break;
+				case 'kadp' :		cKaiAdp = cnt[1];break;
+				case 'osdt' :		cKaiOsd = cnt[1];break;
+				case 'iname1' :		cKaiIname1 = cnt[1];break;
+				case 'iname2' :		cKaiIname2 = cnt[1];break;
+				case 'iname3' :		cKaiIname3 = cnt[1];break;
+				case 'iname4' : 	cKaiIname4 = cnt[1];break;
+			}
+		
+		}
+
+		optionSetup();
+	}
+	else
+	{
+		alert("Empty jet.opt file.");
+	}
+}
+
+function config_unit(display)
+{
+
+	let myUrl = window.location.href;
+	// Some times there is an anchor "#" on the end of this string. We need to remove it.
+	myUrl = myUrl.replace('/#','/');
+
+	// Remove harmony from this URL.
+	myUrl = myUrl.replace("/harmony", "");
+
+	let myPath = myUrl.concat("/RC/remote/jet.cfg");
+
+	let myObject = new XMLHttpRequest();
+	myObject.open("GET", myPath, true);
+
+	myObject.send(null); // Do a GET.
+	myObject.onreadystatechange = function ()
+	{
+		// check for request finished.
+		if(myObject.readyState === 4)
+		{
+			// Check for request state to be OK.
+			if(myObject.status === 200 || myObject.status == 0)
+			{
+				let allText = myObject.responseText;
+				configLets(allText, display); 
+
+			}
+			else if (myObject.status == 404) 
+			{
+				alert("Error404: File not found = "+myPath);
+			}
+			else if (myObject.status == 403) 
+			{
+				alert("Error403: Forbidden access, or file type not supported by the copper server.");
+			}
+		}
+	}
+}
+
+function configLets(text, display) 
+{
+	let index;
+	let i;
+	let cnt;
+	let count = text.split(/\r\n|\r|\n/); 
+
+	// If there is a blank jet.cfg file, the count will typically be 4. Don't use it.
+	if(count.length > 4)
+	{
+		// Split up the config file parameters and init our option array.
+		for(i = 0;i < (count.length-1); i++)
+		{
+			cnt = count[i].split(" "); 
+			let option = cnt[0].split(" ", cnt.length);
+
+			switch(cnt[0])
+			{
+				case 'guimode' :		cKaiGui = cnt[1];break;
+				case 'inputsource' :	cKaiIn = cnt[1];break;
+				case 'remotemode' :		cKaiMsg = cnt[1];break;
+				case 'dbkt' :			cKaiTx = cnt[1];break;
+				case 'dbkr' :			cKaiRx = cnt[1];break;
+				case 'osdd' :			cJetDelay = cnt[1];break;
+			}
+		
+		}
+
+		configSetup();
+	}
+	else
+	{
+		alert("Empty jet.cfg file.");
+	}
+}
+
+function trace_unit(display)
+{
+	let myUrl = window.location.href;
+	// Some times there is an anchor "#" on the end of this string. We need to remove it.
+	myUrl = myUrl.replace('/#','/');
+
+	// Remove harmony from this URL.
+	myUrl = myUrl.replace("/harmony", "");
+
+	let myPath = myUrl.concat("/RC/remote/.trc.log");
+
+	let myObject = new XMLHttpRequest();
+	myObject.open("GET", myPath, true);
+
+	myObject.send(null); // Do a GET.
+	myObject.onreadystatechange = function ()
+	{
+		// check for request finished.
+		if(myObject.readyState === 4)
+		{
+			// Check for request state to be OK.
+			if(myObject.status === 200 || myObject.status == 0)
+			{
+				let allText = myObject.responseText;
+				document.getElementById("traceWindow").innerHTML = allText;
+			}
+			else if (myObject.status == 404) 
+			{
+				alert("Error404: File not found = "+myPath);
+			}
+			else if (myObject.status == 403) 
+			{
+				alert("Error403: Forbidden access, or file type not supported by the copper server.");
+			}
+		}
+	}
+	traceDump(display);
+}
+
+function sendToken(myToken)
+{
+	let myObject = new XMLHttpRequest();
+
+	myObject.onreadystatechange = function() 
+	{//Call a function when the state changes.
+		if(myObject.readyState == 0)
+		{
+			alert("Request not initalized");
+		}
+		else if(myObject.readyState == 4)
+		{
+			alert("--Ready state is a 4, and status = " + myObject.statusText);
+		}
+	}
+
+	// no need for a filename here, This post is a special case.
+	myObject.open("POST", null, true);
+	myObject.send(myToken); // Do a POST
+
+	if (myObject.status == 404) 
+	{
+		alert("Error404: File not found.");
+	}
+	else if (myObject.status == 403) 
+	{
+		alert("Error403: Forbidden access.");
+	}
+	
+}
+
+function showMyOptions()
+{
+	optionSetup();
+	configSetup();
+	options_unit(DISPLAY_ON);
+	config_unit(DISPLAY_OFF);
+	trace_unit(DISPLAY_OFF);
+	if(loops == 0)
+	{
+		loops = 1;
+		window.setTimeout(showMyOptions,4000); // Refresh every 4 seconds.
+	}
+}
+
+function urcHelpToggle() 
+{
+	document.getElementById('urc').style.display = 'block' ? 'none' : 'block';
+}
+
+function urcDisplayHelp()
+{ 
+	let urcHTML = "<div id='urc_help2' style='position:absolute; top:20px; left:700px'>";
+    urcHTML += "<img id='urc_help' src='/RC/remote/images/urc_help.png'>";
+	urcHTML += "</div>";  
+	document.getElementById('urc').innerHTML = urcHTML;
+	if(urc.style.display == 'block')
+	{
+		urc.style.display = 'none'; // none is don't display div.
+	}
+	else
+	{
+		urc.style.display = 'block';
+	}
+}
+
+function eliteDisplayHelp()
+{ 
+	let eliteHTML = "<div id='elite_help2' style='position:absolute; top:20px; left:700px'>";
+	eliteHTML += "<img id='elite_help' src='/RC/remote/images/elite_help.png'>";
+	eliteHTML += "</div>";  
+	document.getElementById('elite').innerHTML = eliteHTML;
+	if(elite.style.display == 'block')
+	{
+		elite.style.display = 'none'; // none is don't display div.
+	}
+	else
+	{
+		elite.style.display = 'block';
+	}
+}
+function setButtons(value)
+{
+	let cfg = document.getElementById('configId');
+	let trc = document.getElementById('traceId');
+	if(value == "CFG")
+	{
+		trc.style.display = 'none'; // don't display trace if open.
+		if (cfg.style.display === 'none')
+		{
+			cfg.style.display = 'block';
+		}
+		else
+		{
+			cfg.style.display = 'none'; // don't display.
+		}
+	}
+	else if(value == "TRC")
+	{
+		cfg.style.display = 'none'; // don't display config if open.
+		if (trc.style.display === 'none')
+		{
+			trace_unit(DISPLAY_ON);
+			trc.style.display = 'block';
+		}
+		else
+		{
+			trace_unit(DISPLAY_OFF);
+			trc.style.display = 'none'; // don't display.
+		}
+	}
+}
+</script>
+</head>
+
+<body onload="showMyOptions()">
+<div id="skreens_image" style="position:absolute; top:20px; left:20; padding:0; width:750px; height:300px;">
+<form action="jetpad.html" method="get">
+<input id="detailsx" type="button" value="Options Help" onclick="optionsDetails()" style="width:100px; background-color:#FFFF66;">
+</div>
+
+<div style="background:#FFFFFF none; color:#000000; position:absolute; top:20px; left:130px; width:150px;">
+<input id="urc_button" type="button" value="Harmony 650 Help" onclick="urcDisplayHelp()" style="width:150px; background-color:#FFFF66;">
+</div>
+
+<div style="background:#FFFFFF none; color:#000000; position:absolute; top:20px; left:290px; width:150px;">
+<input id="elite_button" type="button" value="Harmony Elite Help" onclick="eliteDisplayHelp()" style="width:150px; background-color:#FFFF66;">
+</div>
+<!--
+<div style="background:#FFFFFF none; color:#000000; position:absolute; top:20px; left:240px; width:100px;">
+<input id="elite_button" type="button" value="Elite Help" onclick="allDetails()" style="width:100px; background-color:#FFFF66;">
+</div>
+-->
+<div id="skreens_image" style="position:absolute; top:50px; left:20; padding:0; width:750px; height:300px;">
+<img src ="/RC/remote/images/Skreens.png" alt="Skreens Image" usemap ="#skreensMap">
+<map id ="skreensMap" name="skreensMap">
+<area shape="circle" coords ="375,170,15" onclick="setButtons('CFG')"  name="set_submit" class="a"/>
+<area shape="circle" coords ="600,170,15" onclick="setButtons('TRC')"  name="set_submit" class="a"/>
+</map>
+</div>
+<div id="aOptions"></div> 
+<div id="cOptions"></div> 
+<div id="tOptions"></div> 
+<div id="urc"></div> 
+<div id="elite"></div> 
+</form>
+</body>
+</html>
